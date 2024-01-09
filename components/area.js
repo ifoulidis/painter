@@ -4,24 +4,25 @@ import DropDownPicker from "react-native-dropdown-picker";
 // Shape components
 import Square from "./shapes/Square.js";
 import Rectangle from "./shapes/Rectangle.js";
-// import Triangle from "./shapes/Triangle.js";
-// import Trapezoid from "./shapes/Trapezoid.js";
-// import Cylinder from "./shapes/Cylinder.js";
-// import Cone from "./shapes/Cone.js";
-// import Sphere from "./shapes/Sphere.js";
+import Triangle from "./shapes/Triangle.js";
+import Trapezoid from "./shapes/Trapezoid.js";
+import Cylinder from "./shapes/Cylinder.js";
+import Cone from "./shapes/Cone.js";
+import Sphere from "./shapes/Sphere.js";
 
 export function Area({ name, onChange }) {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const [shape, setShape] = useState(null);
   const [area, setArea] = useState(0);
+  const [customName, setCustomName] = useState(name);
   const shapes = [
     { label: "Square", value: "square" },
     { label: "Rectangle", value: "rectangle" },
-    // { label: "Triangle", value: "triangle" },
-    // { label: "Trapezoid", value: "trapezoid" },
-    // { label: "Cylinder", value: "cylinder" },
-    // { label: "Cone", value: "cone" },
-    // { label: "Sphere", value: "sphere" },
+    { label: "Triangle", value: "triangle" },
+    { label: "Trapezoid", value: "trapezoid" },
+    { label: "Cylinder", value: "cylinder" },
+    { label: "Cone", value: "cone" },
+    { label: "Sphere", value: "sphere" },
   ];
 
   // useEffect(() => {
@@ -32,9 +33,9 @@ export function Area({ name, onChange }) {
   useEffect(() => {
     if (area !== null && !isNaN(area)) {
       // Notify the parent when the shape changes
-      onChange(area);
+      onChange(area, customName);
     }
-  }, [shape, area]);
+  }, [shape, area, customName, quantity]);
 
   // Render the selected shape component
   const renderShapeComponent = () => {
@@ -43,30 +44,27 @@ export function Area({ name, onChange }) {
         return <Square onChange={(area) => setArea(Number(area))} />;
       case "rectangle":
         return <Rectangle onChange={(area) => setArea(Number(area))} />;
-      // case "triangle":
-      //   return (
-      //     <Triangle onChange={(area) => setArea(area)} />
-      //   );
-      // case "trapezoid":
-      //   return (
-      //     <Trapezoid onChange={(area) => setArea(area)} />
-      //   );
-      // case "cylinder":
-      //   return (
-      //     <Cylinder onChange={(area) => setArea(area)} />
-      //   );
-      // case "cone":
-      //   return <Cone onChange={(area) => setArea(area)} />;
-      // case "sphere":
-      //   return <Sphere onChange={(area) => setArea(area)} />;
+      case "triangle":
+        return <Triangle onChange={(area) => setArea(area)} />;
+      case "trapezoid":
+        return <Trapezoid onChange={(area) => setArea(area)} />;
+      case "cylinder":
+        return <Cylinder onChange={(area) => setArea(area)} />;
+      case "cone":
+        return <Cone onChange={(area) => setArea(area)} />;
+      case "sphere":
+        return <Sphere onChange={(area) => setArea(area)} />;
       default:
         return null;
     }
   };
 
   return (
-    <View style={styles.childContainer} key={name}>
-      <TextInput defaultValue={name}></TextInput>
+    <View style={styles.childContainer}>
+      <TextInput
+        onEndEditing={(text) => setCustomName(text)}
+        defaultValue={customName}
+      />
       <Text style={styles.inputLabel}>Shape</Text>
       <DropDownPicker
         style={styles.dropdownPicker}
@@ -79,10 +77,6 @@ export function Area({ name, onChange }) {
       {/* Render the selected shape component */}
       {renderShapeComponent()}
       <Text style={styles.areaText}>Area: {String(area.toFixed(2))}</Text>
-      <View style={styles.quantityContainer}>
-        <Text style={styles.quantityLabel}>Quantity: </Text>
-        <TextInput defaultValue={String(1)} style={styles.quantityInput} />
-      </View>
     </View>
   );
 }
@@ -112,20 +106,5 @@ const styles = StyleSheet.create({
   },
   dropdownPicker: {
     marginBottom: 16,
-  },
-  quantityContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  quantityLabel: {
-    fontSize: 16,
-    marginRight: 8,
-  },
-  quantityInput: {
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    width: 60,
   },
 });

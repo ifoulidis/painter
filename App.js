@@ -9,6 +9,7 @@ import QuoteScreen from "./components/QuoteScreen.js";
 import PaintEstimateScreen from "./components/PaintEstimateScreen.js";
 import AuthenticatedApp from "./components/AuthenticatedApp.js";
 import EstimateByFPAScreen from "./components/EstimateByFPAScreen.js";
+import GuidanceScreen from "./components/GuidanceScreen.js";
 
 const Stack = createStackNavigator();
 
@@ -22,14 +23,15 @@ const App = () => {
           <>
             <Stack.Screen name="Dashboard" component={AuthenticatedApp} />
             <Stack.Screen
-              name="Paint Estimate Screen"
+              name="PaintEstimateScreen"
               component={PaintEstimateScreen}
             />
             <Stack.Screen name="QuoteScreen" component={QuoteScreen} />
             <Stack.Screen
-              name="Estimate By FPA Screen"
+              name="EstimateByFPAScreen"
               component={EstimateByFPAScreen}
             />
+            <Stack.Screen name="GuidanceScreen" component={GuidanceScreen} />
           </>
         ) : (
           <>

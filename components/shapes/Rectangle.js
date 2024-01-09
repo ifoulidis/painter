@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import React, { useState, useEffect } from "react";
 
-export default function Square({ onChange }) {
-  const [length1, setLength1] = useState(1);
-  const [length2, setLength2] = useState(1);
+export default function Rectangle({ onChange }) {
+  const [length1, setLength1] = useState(0);
+  const [length2, setLength2] = useState(0);
 
   // Calculate the area whenever the length changes
   useEffect(() => {

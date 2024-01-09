@@ -36,6 +36,12 @@ const AuthenticatedApp = ({ navigation }) => {
           onPress={() => navigation.navigate("EstimateByFPAScreen")}
         />
       </Card>
+      <Card containerStyle={styles.cardContainer}>
+        <Button
+          title="Guidance"
+          onPress={() => navigation.navigate("GuidanceScreen")}
+        />
+      </Card>
       <View style={styles.footer}>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Logout</Text>

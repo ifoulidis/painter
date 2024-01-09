@@ -2,30 +2,43 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { Area } from "./area";
-import { Message } from "./Message";
+import { Area } from "./Area";
+import { v4 as uuidv4 } from "uuid";
 
 const PaintEstimateScreen = ({ navigation }) => {
-  const [areas, setAreas] = useState([{ name: "Area 1", area: Number(0) }]);
+  const [areas, setAreas] = useState([
+    { id: uuidv4(), name: "Area 1", area: Number(0) },
+  ]);
   const [totalArea, setTotalArea] = useState(Number(0));
+  const [totalPaint, setTotalPaint] = useState(Number(0));
 
   // Function to add a new area
   const addArea = () => {
-    const newArea = { name: `New Area ${areas.length + 1}`, area: Number(0) };
+    const newArea = {
+      id: uuidv4(),
+      name: `New Area ${areas.length + 1}`,
+      area: Number(0),
+    };
     setAreas([...areas, newArea]);
   };
 
   // Function to update the area of a specific item
-  const updateArea = (name, area) => {
+  const updateArea = (name, newName, area) => {
     console.log("area check: ", area);
+
     setAreas((prevAreas) =>
       prevAreas.map((prevArea) =>
-        prevArea.name === name ? { ...prevArea, area: Number(area) } : prevArea
+        prevArea.name === name
+          ? {
+              ...prevArea,
+              name: newName !== "" ? newName : prevArea.name,
+              area: Number(area),
+            }
+          : prevArea
       )
     );
   };
@@ -48,22 +61,24 @@ const PaintEstimateScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlatList
+        style={styles.areasContainer}
         data={areas}
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.areaContainer}>
             <Area
-              key={item.name}
+              key={item.id}
               name={item.name}
-              onChange={(area) => updateArea(item.name, area)}
-              style={styles.parentContainer}
+              onChange={(area, newName) => updateArea(item.name, newName, area)}
             />
           </View>
         )}
       />
 
       <View style={styles.footer}>
-        <Text style={styles.totalAreaText}>Total Area: {totalArea}</Text>
+        <Text style={styles.totalAreaText}>
+          Total Area: {Number(totalArea.toFixed(2))}
+        </Text>
         <TouchableOpacity style={styles.addButton} onPress={addArea}>
           <Text style={styles.addButtonText}>Add Area</Text>
         </TouchableOpacity>
@@ -76,6 +91,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+  },
+  areasContainer: {
+    marginBottom: 50,
   },
   areaContainer: {
     marginBottom: 16,

@@ -16,17 +16,17 @@ const QuoteScreen = ({ navigation }) => {
       page.drawText(`Room Size: ${roomSize}`, {
         x: 50,
         y: 750,
-        color: rgb(0, 0, 0),
+        color: "rgb(0, 0, 0)",
       });
       page.drawText(`Paint Color: ${paintColor}`, {
         x: 50,
         y: 730,
-        color: rgb(0, 0, 0),
+        color: "rgb(0, 0, 0)",
       });
       page.drawText(`Additional Details: ${additionalDetails}`, {
         x: 50,
         y: 710,
-        color: rgb(0, 0, 0),
+        color: "rgb(0, 0, 0)",
       });
 
       const pdfBytes = await pdfDoc.save();

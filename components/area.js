@@ -14,7 +14,8 @@ export function Area({ name, onChange }) {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const [shape, setShape] = useState(null);
   const [area, setArea] = useState(0);
-  const [customName, setCustomName] = useState(name);
+  const [customName, setCustomName] = useState(String(name));
+  const [quantity, setQuantity] = useState(1);
   const shapes = [
     { label: "Square", value: "square" },
     { label: "Rectangle", value: "rectangle" },
@@ -32,8 +33,9 @@ export function Area({ name, onChange }) {
 
   useEffect(() => {
     if (area !== null && !isNaN(area)) {
+      console.log("name:", customName);
       // Notify the parent when the shape changes
-      onChange(area, customName);
+      onChange(area, customName, quantity);
     }
   }, [shape, area, customName, quantity]);
 
@@ -62,7 +64,7 @@ export function Area({ name, onChange }) {
   return (
     <View style={styles.childContainer}>
       <TextInput
-        onEndEditing={(text) => setCustomName(text)}
+        onChangeText={(text) => setCustomName(text)}
         defaultValue={customName}
       />
       <Text style={styles.inputLabel}>Shape</Text>
@@ -77,6 +79,30 @@ export function Area({ name, onChange }) {
       {/* Render the selected shape component */}
       {renderShapeComponent()}
       <Text style={styles.areaText}>Area: {String(area.toFixed(2))}</Text>
+      <View style={styles.inlineInput}>
+        <Text style={styles.areaText}>Quantity: </Text>
+        <TextInput
+          style={styles.textInput}
+          inputMode="decimal"
+          // Change onChangeText to something better
+          onChangeText={(text) => {
+            const parsedValue = Number(text);
+            if (!isNaN(parsedValue)) {
+              if (parsedValue !== 0) {
+                setQuantity(parsedValue);
+              }
+            }
+          }}
+          onSubmitEditing={(text) => {
+            const parsedValue = Number(text);
+            // Allows a value of zero if user pushes enter
+            if (!isNaN(parsedValue)) {
+              setQuantity(parsedValue);
+            }
+          }}
+          defaultValue={String(quantity)}
+        />
+      </View>
     </View>
   );
 }
@@ -103,8 +129,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 16,
+    minWidth: 50,
   },
   dropdownPicker: {
     marginBottom: 16,
+  },
+  inlineInput: {
+    alignItems: "center",
+    flexDirection: "row",
   },
 });
